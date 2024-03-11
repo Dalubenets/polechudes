@@ -1,0 +1,37 @@
+def print_w(word, unknown):
+    letters = [a if a not in unknown else "*" for a in word]
+    print("".join(letters))
+ 
+intructions = "you must choose letter(a - z) and print this letter"
+
+def guess(word):
+    word = word.lower()
+    count = 0
+    typed_letters = set()
+    a = input().lower()
+    unknown = set(word)
+    while True:
+        if a == "/help":
+            print(intructions)
+        if a == word:
+            unknown = set()
+        elif len(a) == 1 and "a" <= a <= "z":
+            if a in typed_letters:
+                print("already typed") # mini victory
+                a = input().lower()
+                continue
+            # check that letter is in word
+            if a in unknown:
+                # letter found in word
+                unknown.remove(a)
+            else:
+                # letter not found in word:
+                pass
+            count += 1
+            typed_letters.add(a)
+        if not unknown:
+            break
+        print_w(word, unknown)
+        a = input().lower()
+    print("victory", word)
+guess('coffee')
