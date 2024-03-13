@@ -1,0 +1,55 @@
+def print_w(word, unknown):
+    letters = [a if a not in unknown else "*" for a in word]
+    print("".join(letters))
+ 
+instructions = "You must choose letter(a - z, A - Z) or try the whole word"
+help_instructions = instructions + "\n"\
+                    "Use /tried to see letters you have tried\n" + \
+                    "Use /rem to see unused letters."
+ 
+def guess(word):
+    count = 0
+    word = word.lower()
+    typed_letters = set()
+    unknown = set(word)
+    alphabet = list("abcdefghijklmnopqrstuvwxyz")
+    while True:
+        print("\n", instructions)
+        a = input().lower()
+        if a == "/help":
+            print(help_instructions)
+        elif a == "/tried":
+            print("Tried letters: ", typed_letters)
+        elif a == "/rem":
+            print("Remaining letters are", alphabet)
+        elif a == word:
+            # guessed the whole word
+            break
+        elif len(a) != 1 or not a.isalpha():
+            print("It is not a single alpha character.")
+        else:
+            a = a.lower()
+            # check if we tried this letter
+            if a in typed_letters:
+                print("You have already tried this letter")
+                continue
+            # check that letter is in word
+            if a in unknown:
+                # letter found in word
+                print("You have guessed a letter", a)
+                unknown.remove(a)
+            else:
+                # letter not found in word:
+                print("Letter", a, " is not in the word..")
+                count += 1
+            alphabet.remove(a)
+            typed_letters.add(a)
+        if not unknown:
+            break
+        print_w(word, unknown)
+    print("Victory", word, "It took you ", count, " tries.")
+ 
+words = ["mother" , "father", "sister", "brother", "family"]
+print("Enter an index between 0 and 4:")
+input_index = int(input())
+guess(words[input_index])
